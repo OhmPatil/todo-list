@@ -6,9 +6,26 @@ const displayModule = () =>{
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
         document.querySelector('.projects-container').appendChild(projectDiv);
-}
+    }
+
+    const displayAddProjectButton = () => {
+        const addProjectButton = document.createElement('button');
+        addProjectButton.textContent = 'Add Project';
+        addProjectButton.classList.add('add-project-button');
+        document.querySelector('.projects-container').appendChild(addProjectButton);
+    }
+
+    const displayAllProjects = (projects) => {
+        projects.forEach(project => {
+            displayProject(project);
+        })
+        displayAddProjectButton();
+    }
+
     return {
-        displayProject
+        displayProject,
+        displayAddProjectButton,
+        displayAllProjects
     }
 }
 

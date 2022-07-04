@@ -17,7 +17,5 @@ projects.push(project2);
 
 let displayController = displayModule();
 
-projects.forEach(project => {
-    displayController.displayProject(project);
-});
+displayController.displayAllProjects(projects);
     
