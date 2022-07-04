@@ -69,9 +69,26 @@ const displayModule = () =>{
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
         document.querySelector('.projects-container').appendChild(projectDiv);
-}
+    }
+
+    const displayAddProjectButton = () => {
+        const addProjectButton = document.createElement('button');
+        addProjectButton.textContent = 'Add Project';
+        addProjectButton.classList.add('add-project-button');
+        document.querySelector('.projects-container').appendChild(addProjectButton);
+    }
+
+    const displayAllProjects = (projects) => {
+        projects.forEach(project => {
+            displayProject(project);
+        })
+        displayAddProjectButton();
+    }
+
     return {
-        displayProject
+        displayProject,
+        displayAddProjectButton,
+        displayAllProjects
     }
 }
 
@@ -160,9 +177,7 @@ projects.push(project2);
 
 let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
 
-projects.forEach(project => {
-    displayController.displayProject(project);
-});
+displayController.displayAllProjects(projects);
     
 })();
 
