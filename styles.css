@@ -1,0 +1,51 @@
+:root{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+#content{
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 100%;
+}
+
+/* Left section stuff */
+#left-section{
+    height: 100%;
+    border: 5px solid red;
+    padding: 10%;
+}
+
+#projects{
+
+}
+
+.projects-container{
+    border: 2px solid orange;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.title{
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.divider{
+    height: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: black;
+}
+
+
+/* Right section stuff */
+#right-section{
+    height: 100%;
+    border: 5px solid green;
+}

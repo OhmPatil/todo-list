@@ -15,13 +15,25 @@ const todoListFactory = (title, desc, dueDate, priority, isComplete) => {
         this.isComplete = !this.isComplete;
     }
 
+    const changePriority = function(newPriority){
+        this.priority = newPriority;
+    }
+
+    const edit = function(newTitle, newDesc, newDueDate){
+        this.title = newTitle;
+        this.desc = newDesc;
+        this.dueDate = newDueDate;
+    }
+
     return {
         title,
         desc,
         dueDate,
         priority,
         isComplete,
-        changeStatus
+        changeStatus,
+        changePriority,
+        edit
     }
 }
 
@@ -35,6 +47,31 @@ const projectFactory = (title, desc) => {
         desc,
         todos,
         addTodo
+    }
+}
+
+
+
+
+/***/ }),
+/* 2 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "displayModule": () => (/* binding */ displayModule)
+/* harmony export */ });
+const displayModule = () =>{
+    const displayProject = (project) => {
+        const projectDiv = document.createElement('div');
+        projectDiv.classList.add('project');
+        const projectTitle = document.createElement('h2');
+        projectTitle.textContent = `${project.title}`;
+        projectDiv.appendChild(projectTitle);
+        document.querySelector('.projects-container').appendChild(projectDiv);
+}
+    return {
+        displayProject
     }
 }
 
@@ -103,14 +140,30 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 
 
+
+let projects = []
 let todo = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoListFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
 let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoListFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
 let project = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'Project 1');
+let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'Project 2');
 project.addTodo(todo);
 project.addTodo(todo2);
-console.log(project.todos);
+console.log(todo.priority, todo.title, todo.desc, todo.dueDate); 
+todo.changePriority('medium');
+todo.edit('edited', 'edited', '123123123');
+console.log(todo.priority, todo.title, todo.desc, todo.dueDate); 
+projects.push(project);
+projects.push(project2);
+
+let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
+
+projects.forEach(project => {
+    displayController.displayProject(project);
+});
+    
 })();
 
 /******/ })()
