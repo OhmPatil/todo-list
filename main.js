@@ -80,14 +80,30 @@ const displayModule = () =>{
         const addProjectButton = document.createElement('button');
         addProjectButton.textContent = 'Add Project';
         addProjectButton.classList.add('add-project-button');
+
         addProjectButton.addEventListener("click", function() {
             document.querySelector('.project-popup').style.display = "flex";
         });
-        document.querySelector('.close').addEventListener("click", function() {
+        document.querySelector('.close-project').addEventListener("click", function() {
             document.querySelector('.project-popup').style.display = "none";
         });
             
         document.querySelector('.projects-container').appendChild(addProjectButton);
+    }
+
+    const displayAddTaskButton = () => {
+        const addTaskButton = document.createElement('button');
+        addTaskButton.textContent = 'Add Task';
+        addTaskButton.classList.add('add-task-button');
+
+        addTaskButton.addEventListener("click", function() {
+            document.querySelector('.task-popup').style.display = "flex";
+        });
+        document.querySelector('.close-task').addEventListener("click", function() {
+            document.querySelector('.task-popup').style.display = "none";
+        });
+
+        document.querySelector('.tasks-container').appendChild(addTaskButton);
     }
 
     const displayAllProjects = (projects) => {
@@ -127,7 +143,7 @@ const displayModule = () =>{
             todoDiv.appendChild(todoComplete);
             document.querySelector('.tasks-container').appendChild(todoDiv);
         })
-        
+        displayAddTaskButton();
 
     }
 
@@ -276,6 +292,7 @@ displayController.displayAllProjects(projects);
 formControllerModule.acceptProjectForm();
 formControllerModule.addProjectToArray(project, projects);
 formControllerModule.addProjectToArray(project2, projects);
+displayController.displayTodos(project);
 // console.log(projects);
 })();
 
