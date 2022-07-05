@@ -26,9 +26,9 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 }
 
 const projectFactory = (title, desc) => {
-    let todos = [];
+    let todos = []
     const addTodo = function(todo){
-        this.todos.push(todo);
+        todos.push(todo);
     }
     return {
         title,

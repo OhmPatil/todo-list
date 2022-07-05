@@ -38,9 +38,9 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 }
 
 const projectFactory = (title, desc) => {
-    let todos = [];
+    let todos = []
     const addTodo = function(todo){
-        this.todos.push(todo);
+        todos.push(todo);
     }
     return {
         title,
@@ -59,9 +59,85 @@ const projectFactory = (title, desc) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formModule": () => (/* binding */ formModule)
+/* harmony export */ });
+/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+
+
+
+let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
+
+let formModule = (projects) => {
+    const acceptProjectForm = function(){
+        document.getElementById('new-project-form').addEventListener('submit', function(e){
+            e.preventDefault();
+            const projectTitle = document.getElementById('form-project-title').value;
+            const projectDesc = document.getElementById('form-project-desc').value;
+            const project = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.projectFactory)(projectTitle, projectDesc);
+            document.getElementById('new-project-form').reset();
+            console.log('project submitted');
+            addProjectToArray(project, projects);
+            console.log('project added to array');
+
+            document.querySelector('.project-popup').style.display = "none";   
+        })
+    }
+
+    const addProjectToArray = function(project, array){
+        array.push(project);
+        displayController.displayAllProjects(array);
+    }
+
+    // const acceptTaskForm = function(project){
+    //     document.getElementById('task-submit-button').addEventListener('click', function(e){
+    //         e.preventDefault();
+    //         const taskTitle = document.getElementById('form-task-title').value;
+    //         const taskDesc = document.getElementById('form-task-desc').value;
+    //         // const taskDate = document.getElementById('form-task-date').value;
+    //         // const taskPriority = document.getElementById('form-task-priority').value;
+    //         // const taskCompleted = document.getElementById('form-task-completed').checked;
+    //         const task = todoFactory(taskTitle, taskDesc, '2020-01-01', 'low', false);
+    //         document.getElementById('new-task-form').reset();
+    //         console.log('task submitted');
+    //         addTaskToProject(task, project);
+    //         console.log('task added to array');
+
+    //         document.querySelector('.task-popup').style.display = "none";   
+    //     })
+    // }
+
+    // const addTaskToProject = function(task, project){
+    //     project.addTodo(task);
+    //     console.log(project.todos);
+    // }
+
+    return {
+        acceptProjectForm,
+        addProjectToArray,
+        // acceptTaskForm,
+    }
+}
+
+
+
+
+/***/ }),
+/* 3 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "displayModule": () => (/* binding */ displayModule)
 /* harmony export */ });
-const displayModule = () =>{
+/* harmony import */ var _form_control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+
+
+
+
+let displayModule = () =>{
+
     const displayProject = (project) => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project');
@@ -74,6 +150,28 @@ const displayModule = () =>{
             displayTodos(project);
         })
         document.querySelector('.projects-container').appendChild(projectDiv);
+    }
+
+    const acceptTaskForm = function(project){
+        document.getElementById('task-submit-button').addEventListener('click', function(e){
+            e.preventDefault();
+            const taskTitle = document.getElementById('form-task-title').value;
+            const taskDesc = document.getElementById('form-task-desc').value;
+            // const taskDate = document.getElementById('form-task-date').value;
+            // const taskPriority = document.getElementById('form-task-priority').value;
+            // const taskCompleted = document.getElementById('form-task-completed').checked;
+            const task = (0,_factories__WEBPACK_IMPORTED_MODULE_1__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
+            document.getElementById('new-task-form').reset();
+            console.log('task submitted');
+            addTaskToProject(task, project);
+            console.log('task added to array');
+
+            document.querySelector('.task-popup').style.display = "none";   
+        })
+    }
+
+    const addTaskToProject = function(task, project){
+        project.addTodo(task);
     }
 
     const displayAddProjectButton = () => {
@@ -144,61 +242,12 @@ const displayModule = () =>{
             document.querySelector('.tasks-container').appendChild(todoDiv);
         })
         displayAddTaskButton();
-
     }
-
     return {
         displayProject,
         displayAddProjectButton,
         displayAllProjects,
         displayTodos,
-    }
-}
-
-
-
-
-/***/ }),
-/* 3 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "formModule": () => (/* binding */ formModule)
-/* harmony export */ });
-/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-
-
-
-let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
-
-const formModule = (projects) => {
-    const acceptProjectForm = function(){
-        document.getElementById('new-project-form').addEventListener('submit', function(e){
-            e.preventDefault();
-            const projectTitle = document.getElementById('form-project-title').value;
-            const projectDesc = document.getElementById('form-project-desc').value;
-            const project = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.projectFactory)(projectTitle, projectDesc);
-            document.getElementById('new-project-form').reset();
-            console.log('project submitted');
-            addProjectToArray(project, projects);
-            console.log('project added to array');
-            
-            document.querySelector('.project-popup').style.display = "none";
-            
-        })
-       
-    }
-
-    const addProjectToArray = function(project, array){
-        array.push(project);
-        displayController.displayAllProjects(array);
-    }
-
-    return {
-        acceptProjectForm,
-        addProjectToArray,
     }
 }
 
@@ -267,33 +316,39 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 
 
 
 
 let projects = []
-let todo = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
-let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
-let project = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'Project 1');
-let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'Project 2');
-project.addTodo(todo);
-project.addTodo(todo2);
-project2.addTodo(todo2)
-// projects.push(project);
-// projects.push(project2);
-
 let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)();
-let formControllerModule = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
+let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
 
-displayController.displayAllProjects(projects);
+let project1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'This is project 1');
+let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'This is project 2');
+let project3 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 3', 'This is project 3');
+let todo1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
+let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
+projects.push(project1);
+projects.push(project2);
+projects.push(project3);
 
-formControllerModule.acceptProjectForm();
-formControllerModule.addProjectToArray(project, projects);
-formControllerModule.addProjectToArray(project2, projects);
-displayController.displayTodos(project);
-// console.log(projects);
+project1.addTodo(todo1);
+project2.addTodo(todo2);
+
+
+
+function initializeApp(){
+    displayController.displayAllProjects(projects);
+    formController.acceptProjectForm();
+    projects.forEach(project => {
+        
+    })
+}
+
+initializeApp();
 })();
 
 /******/ })()
