@@ -5,6 +5,11 @@ const displayModule = () =>{
         const projectTitle = document.createElement('h2');
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
+        
+        projectDiv.addEventListener('click', function(){
+            console.log('clicked');
+            displayTodos(project);
+        })
         document.querySelector('.projects-container').appendChild(projectDiv);
     }
 
@@ -23,6 +28,8 @@ const displayModule = () =>{
     }
 
     const displayAllProjects = (projects) => {
+        document.querySelector('.projects-container').replaceChildren();
+
         projects.forEach(project => {
             displayProject(project);
         })
@@ -30,8 +37,14 @@ const displayModule = () =>{
     }
 
     const displayTodos = function(project){
+        document.querySelector('.tasks-container').replaceChildren();
+        
+        document.getElementById('project-title').textContent = project.title;
+        document.getElementById('project-desc').textContent = project.desc;
+
         const todos = project.todos;
         todos.forEach(todo => {
+
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
             const todoTitle = document.createElement('h3');

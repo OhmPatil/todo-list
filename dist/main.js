@@ -68,6 +68,11 @@ const displayModule = () =>{
         const projectTitle = document.createElement('h2');
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
+        
+        projectDiv.addEventListener('click', function(){
+            console.log('clicked');
+            displayTodos(project);
+        })
         document.querySelector('.projects-container').appendChild(projectDiv);
     }
 
@@ -86,6 +91,8 @@ const displayModule = () =>{
     }
 
     const displayAllProjects = (projects) => {
+        document.querySelector('.projects-container').replaceChildren();
+
         projects.forEach(project => {
             displayProject(project);
         })
@@ -93,8 +100,14 @@ const displayModule = () =>{
     }
 
     const displayTodos = function(project){
+        document.querySelector('.tasks-container').replaceChildren();
+        
+        document.getElementById('project-title').textContent = project.title;
+        document.getElementById('project-desc').textContent = project.desc;
+
         const todos = project.todos;
         todos.forEach(todo => {
+
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
             const todoTitle = document.createElement('h3');
@@ -123,6 +136,53 @@ const displayModule = () =>{
         displayAddProjectButton,
         displayAllProjects,
         displayTodos,
+    }
+}
+
+
+
+
+/***/ }),
+/* 3 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formModule": () => (/* binding */ formModule)
+/* harmony export */ });
+/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
+
+
+let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
+
+const formModule = (projects) => {
+    const acceptProjectForm = function(){
+        document.getElementById('new-project-form').addEventListener('submit', function(e){
+            e.preventDefault();
+            const projectTitle = document.getElementById('form-project-title').value;
+            const projectDesc = document.getElementById('form-project-desc').value;
+            const project = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.projectFactory)(projectTitle, projectDesc);
+            document.getElementById('new-project-form').reset();
+            console.log('project submitted');
+            addProjectToArray(project, projects);
+            console.log('project added to array');
+            
+            document.querySelector('.project-popup').style.display = "none";
+            
+        })
+       
+    }
+
+    const addProjectToArray = function(project, array){
+        array.push(project);
+        displayController.displayAllProjects(array);
+    }
+
+    return {
+        acceptProjectForm,
+        addProjectToArray,
     }
 }
 
@@ -191,7 +251,9 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+
 
 
 
@@ -203,16 +265,18 @@ let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Pr
 project.addTodo(todo);
 project.addTodo(todo2);
 project2.addTodo(todo2)
-todo.changePriority('medium');
-todo.edit('edited', 'edited', '123123123');
-projects.push(project);
-projects.push(project2);
+// projects.push(project);
+// projects.push(project2);
 
-let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
+let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)();
+let formControllerModule = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
 
 displayController.displayAllProjects(projects);
-displayController.displayTodos(project);
 
+formControllerModule.acceptProjectForm();
+formControllerModule.addProjectToArray(project, projects);
+formControllerModule.addProjectToArray(project2, projects);
+// console.log(projects);
 })();
 
 /******/ })()

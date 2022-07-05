@@ -1,4 +1,5 @@
 import {projectFactory, todoFactory} from './factories.js';
+import { formModule } from './form-control.js';
 import {displayModule} from './renderDOM.js';
 
 let projects = []
@@ -9,12 +10,15 @@ let project2 = projectFactory('Project 2', 'Project 2');
 project.addTodo(todo);
 project.addTodo(todo2);
 project2.addTodo(todo2)
-todo.changePriority('medium');
-todo.edit('edited', 'edited', '123123123');
-projects.push(project);
-projects.push(project2);
+// projects.push(project);
+// projects.push(project2);
 
 let displayController = displayModule();
+let formControllerModule = formModule(projects);
 
 displayController.displayAllProjects(projects);
-displayController.displayTodos(project);
+
+formControllerModule.acceptProjectForm();
+formControllerModule.addProjectToArray(project, projects);
+formControllerModule.addProjectToArray(project2, projects);
+// console.log(projects);
