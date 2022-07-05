@@ -1,4 +1,4 @@
-const todoListFactory = (title, desc, dueDate, priority, isComplete) => {
+const todoFactory = (title, desc, dueDate, priority, isComplete) => {
     const changeStatus = function(){
         this.isComplete = !this.isComplete;
     }
@@ -39,4 +39,4 @@ const projectFactory = (title, desc) => {
 }
 
 
-export {todoListFactory, projectFactory};
+export {todoFactory, projectFactory};

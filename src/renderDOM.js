@@ -12,6 +12,13 @@ const displayModule = () =>{
         const addProjectButton = document.createElement('button');
         addProjectButton.textContent = 'Add Project';
         addProjectButton.classList.add('add-project-button');
+        addProjectButton.addEventListener("click", function() {
+            document.querySelector('.project-popup').style.display = "flex";
+        });
+        document.querySelector('.close').addEventListener("click", function() {
+            document.querySelector('.project-popup').style.display = "none";
+        });
+            
         document.querySelector('.projects-container').appendChild(addProjectButton);
     }
 
@@ -22,10 +29,37 @@ const displayModule = () =>{
         displayAddProjectButton();
     }
 
+    const displayTodos = function(project){
+        const todos = project.todos;
+        todos.forEach(todo => {
+            const todoDiv = document.createElement('div');
+            todoDiv.classList.add('todo');
+            const todoTitle = document.createElement('h3');
+            todoTitle.textContent = `${todo.title}`;
+            todoDiv.appendChild(todoTitle);
+            const todoDesc = document.createElement('p');
+            todoDesc.textContent = `${todo.desc}`;
+            todoDiv.appendChild(todoDesc);
+            const todoPriority = document.createElement('p');
+            todoPriority.textContent = `${todo.priority}`;
+            todoDiv.appendChild(todoPriority);
+            const todoDueDate = document.createElement('p');
+            todoDueDate.textContent = `${todo.dueDate}`;
+            todoDiv.appendChild(todoDueDate);
+            const todoComplete = document.createElement('p');
+            todoComplete.textContent = `${todo.isComplete}`;
+            todoDiv.appendChild(todoComplete);
+            document.querySelector('.tasks-container').appendChild(todoDiv);
+        })
+        
+
+    }
+
     return {
         displayProject,
         displayAddProjectButton,
-        displayAllProjects
+        displayAllProjects,
+        displayTodos,
     }
 }
 

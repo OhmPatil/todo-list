@@ -12,13 +12,32 @@
 <body>
     <div id="content">
         <div id="left-section">
-            <div id="projects">
-                <h1 class="title">Projects</h1>
-                <div class="divider"></div>
-                <div class="projects-container"></div>
-            </div>
+            <h1 class="title">Projects</h1>
+            <div class="divider"></div>
+            <div class="projects-container"></div>
         </div>
-        <div id="right-section"></div>
+        <div id="right-section">
+            <h1 class="title">Project Name</h1>
+            <h2 id="project-desc">Description goes here</h2>
+            <div class="divider"></div>
+            <div class="tasks-container"></div>
+        </div>
     </div>
+
+<!-- Project pop-up section -->
+<div class="project-popup">
+	<div class="project-popup-contents">
+
+		<div class="close">+</div>
+
+		<form action="" id="new-project-form">
+			<input type="text" placeholder="Project name...">
+			<input type="text" placeholder="Project description...">
+			<button type="submit" class="button">Create</button>
+		</form>
+
+	</div>
+</div>
+
 </body>
 </html>

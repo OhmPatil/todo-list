@@ -8,9 +8,9 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "projectFactory": () => (/* binding */ projectFactory),
-/* harmony export */   "todoListFactory": () => (/* binding */ todoListFactory)
+/* harmony export */   "todoFactory": () => (/* binding */ todoFactory)
 /* harmony export */ });
-const todoListFactory = (title, desc, dueDate, priority, isComplete) => {
+const todoFactory = (title, desc, dueDate, priority, isComplete) => {
     const changeStatus = function(){
         this.isComplete = !this.isComplete;
     }
@@ -75,6 +75,13 @@ const displayModule = () =>{
         const addProjectButton = document.createElement('button');
         addProjectButton.textContent = 'Add Project';
         addProjectButton.classList.add('add-project-button');
+        addProjectButton.addEventListener("click", function() {
+            document.querySelector('.project-popup').style.display = "flex";
+        });
+        document.querySelector('.close').addEventListener("click", function() {
+            document.querySelector('.project-popup').style.display = "none";
+        });
+            
         document.querySelector('.projects-container').appendChild(addProjectButton);
     }
 
@@ -85,10 +92,37 @@ const displayModule = () =>{
         displayAddProjectButton();
     }
 
+    const displayTodos = function(project){
+        const todos = project.todos;
+        todos.forEach(todo => {
+            const todoDiv = document.createElement('div');
+            todoDiv.classList.add('todo');
+            const todoTitle = document.createElement('h3');
+            todoTitle.textContent = `${todo.title}`;
+            todoDiv.appendChild(todoTitle);
+            const todoDesc = document.createElement('p');
+            todoDesc.textContent = `${todo.desc}`;
+            todoDiv.appendChild(todoDesc);
+            const todoPriority = document.createElement('p');
+            todoPriority.textContent = `${todo.priority}`;
+            todoDiv.appendChild(todoPriority);
+            const todoDueDate = document.createElement('p');
+            todoDueDate.textContent = `${todo.dueDate}`;
+            todoDiv.appendChild(todoDueDate);
+            const todoComplete = document.createElement('p');
+            todoComplete.textContent = `${todo.isComplete}`;
+            todoDiv.appendChild(todoComplete);
+            document.querySelector('.tasks-container').appendChild(todoDiv);
+        })
+        
+
+    }
+
     return {
         displayProject,
         displayAddProjectButton,
-        displayAllProjects
+        displayAllProjects,
+        displayTodos,
     }
 }
 
@@ -162,23 +196,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let projects = []
-let todo = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoListFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
-let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoListFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
+let todo = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
+let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
 let project = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'Project 1');
 let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'Project 2');
 project.addTodo(todo);
 project.addTodo(todo2);
-console.log(todo.priority, todo.title, todo.desc, todo.dueDate); 
+project2.addTodo(todo2)
 todo.changePriority('medium');
 todo.edit('edited', 'edited', '123123123');
-console.log(todo.priority, todo.title, todo.desc, todo.dueDate); 
 projects.push(project);
 projects.push(project2);
 
 let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
 
 displayController.displayAllProjects(projects);
-    
+displayController.displayTodos(project);
+
 })();
 
 /******/ })()
