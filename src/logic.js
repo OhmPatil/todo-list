@@ -21,4 +21,5 @@ displayController.displayAllProjects(projects);
 formControllerModule.acceptProjectForm();
 formControllerModule.addProjectToArray(project, projects);
 formControllerModule.addProjectToArray(project2, projects);
+displayController.displayTodos(project);
 // console.log(projects);

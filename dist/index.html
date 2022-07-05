@@ -28,11 +28,32 @@
 <div class="project-popup">
 	<div class="project-popup-contents">
 
-		<div class="close">+</div>
+		<div class="close-project">+</div>
 
 		<form action="" id="new-project-form">
-			<input type="text" placeholder="Project title..." id="form-project-title">
-			<input type="text" placeholder="Project description..." id="form-project-desc">
+			<input type="text" placeholder="Project title..." id="form-project-title" maxlength="25">
+			<input type="text" placeholder="Project description..." id="form-project-desc" maxlength="75">
+			<button type="submit" class="button">Create</button>
+		</form>
+
+	</div>
+</div>
+
+<!-- Task pop-up section -->
+<div class="task-popup">
+	<div class="task-popup-contents">
+
+		<div class="close-task">+</div>
+
+		<form action="" id="new-task-form">
+			<input type="text" placeholder="Task title..." id="form-task-title">
+			<input type="text" placeholder="Task description..." id="form-task-desc">
+            <label for="priority">Priority:</label>
+            <select name="priority" id="priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
 			<button type="submit" class="button">Create</button>
 		</form>
 
