@@ -135,43 +135,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 let displayModule = () =>{
 
-    const displayProject = (project) => {
+    const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project');
         const projectTitle = document.createElement('h2');
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
+
+        projectDiv.dataset.id = id;
         
         projectDiv.addEventListener('click', function(){
             console.log('clicked');
-            displayTodos(project);
+            displayTodos(project, id);
+            // displayAddTaskButton(id);
         })
         document.querySelector('.projects-container').appendChild(projectDiv);
-    }
-
-    const acceptTaskForm = function(project){
-        document.getElementById('task-submit-button').addEventListener('click', function(e){
-            e.preventDefault();
-            const taskTitle = document.getElementById('form-task-title').value;
-            const taskDesc = document.getElementById('form-task-desc').value;
-            // const taskDate = document.getElementById('form-task-date').value;
-            // const taskPriority = document.getElementById('form-task-priority').value;
-            // const taskCompleted = document.getElementById('form-task-completed').checked;
-            const task = (0,_factories__WEBPACK_IMPORTED_MODULE_1__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
-            document.getElementById('new-task-form').reset();
-            console.log('task submitted');
-            addTaskToProject(task, project);
-            console.log('task added to array');
-
-            document.querySelector('.task-popup').style.display = "none";   
-        })
-    }
-
-    const addTaskToProject = function(task, project){
-        project.addTodo(task);
     }
 
     const displayAddProjectButton = () => {
@@ -189,13 +169,16 @@ let displayModule = () =>{
         document.querySelector('.projects-container').appendChild(addProjectButton);
     }
 
-    const displayAddTaskButton = () => {
+    const displayAddTaskButton = (id) => {
         const addTaskButton = document.createElement('button');
         addTaskButton.textContent = 'Add Task';
         addTaskButton.classList.add('add-task-button');
 
+        addTaskButton.dataset.id = id;
+
         addTaskButton.addEventListener("click", function() {
             document.querySelector('.task-popup').style.display = "flex";
+            
         });
         document.querySelector('.close-task').addEventListener("click", function() {
             document.querySelector('.task-popup').style.display = "none";
@@ -207,13 +190,15 @@ let displayModule = () =>{
     const displayAllProjects = (projects) => {
         document.querySelector('.projects-container').replaceChildren();
 
+        let id = 0;
         projects.forEach(project => {
-            displayProject(project);
+            displayProject(project, id);
+            id++;
         })
         displayAddProjectButton();
     }
 
-    const displayTodos = function(project){
+    const displayTodos = function(project, id){
         document.querySelector('.tasks-container').replaceChildren();
         
         document.getElementById('project-title').textContent = project.title;
@@ -241,7 +226,7 @@ let displayModule = () =>{
             todoDiv.appendChild(todoComplete);
             document.querySelector('.tasks-container').appendChild(todoDiv);
         })
-        displayAddTaskButton();
+        displayAddTaskButton(id);
     }
     return {
         displayProject,
@@ -315,6 +300,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "projects": () => (/* binding */ projects)
+/* harmony export */ });
 /* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
@@ -343,12 +331,26 @@ project2.addTodo(todo2);
 function initializeApp(){
     displayController.displayAllProjects(projects);
     formController.acceptProjectForm();
-    projects.forEach(project => {
-        
+    // console.log(projects);
+    document.getElementById('new-task-form').addEventListener('submit', function(e){
+        e.preventDefault();
+        let id = document.querySelector('.add-task-button').dataset.id;
+        const taskTitle = document.getElementById('form-task-title').value;
+        const taskDesc = document.getElementById('form-task-desc').value;
+        const task = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
+        // projects[id].todos.push(task);
+        projects[id].addTodo(task);
+        // displayController.displayAllProjects(projects);
+        displayController.displayTodos(projects[id], id);
+        console.log(projects[id].todos);
+        document.getElementById('new-task-form').reset();
+        document.querySelector('.task-popup').style.display = "none";
+        console.log('task submitted');
     })
 }
 
 initializeApp();
+
 })();
 
 /******/ })()
