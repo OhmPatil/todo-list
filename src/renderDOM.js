@@ -90,6 +90,8 @@ const displayModule = () =>{
 
         // Appending each todo to dom
         const todos = project.todos;
+
+        let todo_id = 0;
         todos.forEach(todo => {
 
             const todoDiv = document.createElement('div');
@@ -97,10 +99,14 @@ const displayModule = () =>{
 
             const checkboxDiv = document.createElement('div');
             checkboxDiv.classList.add('checkbox-div');
-            const todoCheckbox = document.createElement('input');
-            todoCheckbox.type = 'checkbox';
-            todoCheckbox.classList.add('todo-checkbox');
-            checkboxDiv.appendChild(todoCheckbox);
+            // const todoCheckbox = document.createElement('input');
+            // todoCheckbox.type = 'checkbox';
+            // todoCheckbox.classList.add('todo-checkbox');
+            checkboxDiv.dataset.todo_id = todo_id;
+            // checkboxDiv.appendChild(todoCheckbox);
+            if (todo.isComplete === true) {
+                checkboxDiv.classList.add('completed');
+            }
             todoDiv.appendChild(checkboxDiv);
 
             const todoTitle = document.createElement('h3');
@@ -117,12 +123,38 @@ const displayModule = () =>{
             todoDiv.appendChild(todoDueDate);
             const todoComplete = document.createElement('p');
             todoComplete.textContent = `${todo.isComplete}`;
+
+            todoDiv.dataset.todo_id = todo_id;
             todoDiv.appendChild(todoComplete);
             document.querySelector('.tasks-container').appendChild(todoDiv);
+
+            todo_id++;
         })
 
         // Displaying add task button after all todos are displayed
         displayAddTaskButton(id);
+
+        checkboxListener(project);
+    }
+
+    const checkboxListener = (project) => {
+        const allCheckboxes = document.querySelectorAll('.checkbox-div');
+        allCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function(){
+                let checkboxID = checkbox.dataset.todo_id;
+                console.log('checkbox clicked');
+                project.todos[checkboxID].changeStatus();
+                displayTodos(project, checkboxID);
+
+
+                if (project.todos[checkboxID].isComplete === true){
+                    checkbox.classList.add('completed');
+                }
+                else{
+                    checkbox.classList.remove('completed');
+                }
+            })
+        })
     }
     return {
         displayProject,

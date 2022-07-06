@@ -22,6 +22,7 @@ projects.push(project2);
 projects.push(project3);
 
 project1.addTodo(todo1);
+project1.addTodo(todo2);
 project2.addTodo(todo2);
 
 
@@ -30,6 +31,8 @@ function initializeApp(){
     displayController.displayAllProjects(projects);
     formController.acceptProjectForm();
     formController.acceptTaskForm();
+
+    displayController.displayTodos(project1, 0);
 }
 
 initializeApp();
