@@ -45,9 +45,11 @@ const formModule = (projects) => {
             // Getting values from form
             const taskTitle = document.getElementById('form-task-title').value;
             const taskDesc = document.getElementById('form-task-desc').value;
+            const taskPriority = document.getElementById('form-task-priority').value;
+            const taskDate = document.getElementById('form-task-duedate').value;
 
             // Creating todo and adding to respective project
-            const task = todoFactory(taskTitle, taskDesc, '2020-01-01', 'low', false);
+            const task = todoFactory(taskTitle, taskDesc, taskDate, taskPriority, false);
             projects[id].addTodo(task);
             console.log('task submitted');
 

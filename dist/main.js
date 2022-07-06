@@ -110,9 +110,11 @@ const formModule = (projects) => {
             // Getting values from form
             const taskTitle = document.getElementById('form-task-title').value;
             const taskDesc = document.getElementById('form-task-desc').value;
+            const taskPriority = document.getElementById('form-task-priority').value;
+            const taskDate = document.getElementById('form-task-duedate').value;
 
             // Creating todo and adding to respective project
-            const task = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
+            const task = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, taskDate, taskPriority, false);
             projects[id].addTodo(task);
             console.log('task submitted');
 
@@ -155,6 +157,7 @@ const displayModule = () =>{
     const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project');
+
         const projectTitle = document.createElement('h2');
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
@@ -240,6 +243,15 @@ const displayModule = () =>{
 
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
+
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.classList.add('checkbox-div');
+            const todoCheckbox = document.createElement('input');
+            todoCheckbox.type = 'checkbox';
+            todoCheckbox.classList.add('todo-checkbox');
+            checkboxDiv.appendChild(todoCheckbox);
+            todoDiv.appendChild(checkboxDiv);
+
             const todoTitle = document.createElement('h3');
             todoTitle.textContent = `${todo.title}`;
             todoDiv.appendChild(todoTitle);

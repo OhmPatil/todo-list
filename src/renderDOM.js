@@ -8,6 +8,7 @@ const displayModule = () =>{
     const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project');
+
         const projectTitle = document.createElement('h2');
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
@@ -93,6 +94,15 @@ const displayModule = () =>{
 
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
+
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.classList.add('checkbox-div');
+            const todoCheckbox = document.createElement('input');
+            todoCheckbox.type = 'checkbox';
+            todoCheckbox.classList.add('todo-checkbox');
+            checkboxDiv.appendChild(todoCheckbox);
+            todoDiv.appendChild(checkboxDiv);
+
             const todoTitle = document.createElement('h3');
             todoTitle.textContent = `${todo.title}`;
             todoDiv.appendChild(todoTitle);
