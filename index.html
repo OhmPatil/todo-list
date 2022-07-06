@@ -48,12 +48,19 @@
 		<form action="" id="new-task-form">
 			<input type="text" placeholder="Task title..." id="form-task-title">
 			<input type="text" placeholder="Task description..." id="form-task-desc">
-            <label for="priority">Priority:</label>
-            <select name="priority" id="priority">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
+            <div class="priority-section">
+                <label for="priority">Priority:</label>
+                <select name="priority" id="form-task-priority">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="duedate-section">
+                <label for="duedate">Due Date: </label>
+                <input type="date" id="form-task-duedate" name="duedate">
+            </div>
+
 			<button type="submit" class="button" id="task-submit-button">Create</button>
 		</form>
 
