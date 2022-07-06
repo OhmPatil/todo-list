@@ -68,54 +68,67 @@ __webpack_require__.r(__webpack_exports__);
 
 let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule)();
 
-let formModule = (projects) => {
+// Main form module
+const formModule = (projects) => {
+
+    // Accept form -> create project -> add project to projects array
     const acceptProjectForm = function(){
         document.getElementById('new-project-form').addEventListener('submit', function(e){
             e.preventDefault();
+
+            // Getting form values
             const projectTitle = document.getElementById('form-project-title').value;
             const projectDesc = document.getElementById('form-project-desc').value;
+
+            // Creating project and resetting form
             const project = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.projectFactory)(projectTitle, projectDesc);
             document.getElementById('new-project-form').reset();
             console.log('project submitted');
+
+            // Adding project to projects array
             addProjectToArray(project, projects);
             console.log('project added to array');
 
+            // Closing popup
             document.querySelector('.project-popup').style.display = "none";   
         })
     }
 
+    // Function for adding projects to array and displaying them
     const addProjectToArray = function(project, array){
         array.push(project);
         displayController.displayAllProjects(array);
     }
 
-    // const acceptTaskForm = function(project){
-    //     document.getElementById('task-submit-button').addEventListener('click', function(e){
-    //         e.preventDefault();
-    //         const taskTitle = document.getElementById('form-task-title').value;
-    //         const taskDesc = document.getElementById('form-task-desc').value;
-    //         // const taskDate = document.getElementById('form-task-date').value;
-    //         // const taskPriority = document.getElementById('form-task-priority').value;
-    //         // const taskCompleted = document.getElementById('form-task-completed').checked;
-    //         const task = todoFactory(taskTitle, taskDesc, '2020-01-01', 'low', false);
-    //         document.getElementById('new-task-form').reset();
-    //         console.log('task submitted');
-    //         addTaskToProject(task, project);
-    //         console.log('task added to array');
+    // Accept form -> create todo -> add todo to project
+    const acceptTaskForm = function(){
+        document.getElementById('new-task-form').addEventListener('submit', function(e){
+            e.preventDefault();
+            // Getting id of project from which todo is being added
+            let id = document.querySelector('.add-task-button').dataset.id;
 
-    //         document.querySelector('.task-popup').style.display = "none";   
-    //     })
-    // }
+            // Getting values from form
+            const taskTitle = document.getElementById('form-task-title').value;
+            const taskDesc = document.getElementById('form-task-desc').value;
 
-    // const addTaskToProject = function(task, project){
-    //     project.addTodo(task);
-    //     console.log(project.todos);
-    // }
+            // Creating todo and adding to respective project
+            const task = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
+            projects[id].addTodo(task);
+            console.log('task submitted');
+
+            // Displaying all todos again including new one
+            displayController.displayTodos(projects[id], id);
+
+            // Resetting form and closing popup
+            document.getElementById('new-task-form').reset();
+            document.querySelector('.task-popup').style.display = "none";
+        })
+    }
 
     return {
         acceptProjectForm,
         addProjectToArray,
-        // acceptTaskForm,
+        acceptTaskForm,
     }
 }
 
@@ -135,8 +148,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let displayModule = () =>{
+// Main display module
+const displayModule = () =>{
 
+    // Function to create and display ONE project
     const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project');
@@ -144,21 +159,26 @@ let displayModule = () =>{
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
 
+        // Assigning unique data-id to each project
         projectDiv.dataset.id = id;
         
+        // Logic for displaying todos
         projectDiv.addEventListener('click', function(){
             console.log('clicked');
             displayTodos(project, id);
-            // displayAddTaskButton(id);
         })
+
+        // Finally appending project to DOM
         document.querySelector('.projects-container').appendChild(projectDiv);
     }
 
+    // Function to create and display Add Project button
     const displayAddProjectButton = () => {
         const addProjectButton = document.createElement('button');
         addProjectButton.textContent = 'Add Project';
         addProjectButton.classList.add('add-project-button');
 
+        // Adding event listeners to button to open/close popup
         addProjectButton.addEventListener("click", function() {
             document.querySelector('.project-popup').style.display = "flex";
         });
@@ -166,16 +186,20 @@ let displayModule = () =>{
             document.querySelector('.project-popup').style.display = "none";
         });
             
+        // Finally appending button to DOM
         document.querySelector('.projects-container').appendChild(addProjectButton);
     }
 
+    // Function to create and display AddTask button
     const displayAddTaskButton = (id) => {
         const addTaskButton = document.createElement('button');
         addTaskButton.textContent = 'Add Task';
         addTaskButton.classList.add('add-task-button');
 
+        // Assigning unique data-id to each button, same id as project
         addTaskButton.dataset.id = id;
 
+        // Adding event listeners to button to open/close popup
         addTaskButton.addEventListener("click", function() {
             document.querySelector('.task-popup').style.display = "flex";
             
@@ -184,9 +208,11 @@ let displayModule = () =>{
             document.querySelector('.task-popup').style.display = "none";
         });
 
+        // Finally appending button to DOM
         document.querySelector('.tasks-container').appendChild(addTaskButton);
     }
 
+    // Function to display ALL projects in array with unique data-id
     const displayAllProjects = (projects) => {
         document.querySelector('.projects-container').replaceChildren();
 
@@ -195,15 +221,20 @@ let displayModule = () =>{
             displayProject(project, id);
             id++;
         })
+
+        // Displaying add project button after all projects are displayed
         displayAddProjectButton();
     }
 
+    // Function to display all todos of one project
     const displayTodos = function(project, id){
         document.querySelector('.tasks-container').replaceChildren();
         
+        // Display project title and desc on right side
         document.getElementById('project-title').textContent = project.title;
         document.getElementById('project-desc').textContent = project.desc;
 
+        // Appending each todo to dom
         const todos = project.todos;
         todos.forEach(todo => {
 
@@ -226,6 +257,8 @@ let displayModule = () =>{
             todoDiv.appendChild(todoComplete);
             document.querySelector('.tasks-container').appendChild(todoDiv);
         })
+
+        // Displaying add task button after all todos are displayed
         displayAddTaskButton(id);
     }
     return {
@@ -310,15 +343,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// Creating empty array to store projects
 let projects = []
+
+// Initializing display and form modules
 let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)();
 let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
 
+// Creating dummy projects and todos
 let project1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'This is project 1');
 let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'This is project 2');
 let project3 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 3', 'This is project 3');
 let todo1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
 let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
+
+// Adding dummy projects and todos to projects array/projects
 projects.push(project1);
 projects.push(project2);
 projects.push(project3);
@@ -327,29 +366,16 @@ project1.addTodo(todo1);
 project2.addTodo(todo2);
 
 
-
+// Main app running logic starts here
 function initializeApp(){
     displayController.displayAllProjects(projects);
     formController.acceptProjectForm();
-    // console.log(projects);
-    document.getElementById('new-task-form').addEventListener('submit', function(e){
-        e.preventDefault();
-        let id = document.querySelector('.add-task-button').dataset.id;
-        const taskTitle = document.getElementById('form-task-title').value;
-        const taskDesc = document.getElementById('form-task-desc').value;
-        const task = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, '2020-01-01', 'low', false);
-        // projects[id].todos.push(task);
-        projects[id].addTodo(task);
-        // displayController.displayAllProjects(projects);
-        displayController.displayTodos(projects[id], id);
-        console.log(projects[id].todos);
-        document.getElementById('new-task-form').reset();
-        document.querySelector('.task-popup').style.display = "none";
-        console.log('task submitted');
-    })
+    formController.acceptTaskForm();
 }
 
 initializeApp();
+
+// Exporting projects array for use in other modules
 
 })();
 
