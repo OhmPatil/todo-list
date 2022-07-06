@@ -23,9 +23,23 @@ project2.addTodo(todo2);
 function initializeApp(){
     displayController.displayAllProjects(projects);
     formController.acceptProjectForm();
-    projects.forEach(project => {
-        
+    // console.log(projects);
+    document.getElementById('new-task-form').addEventListener('submit', function(e){
+        e.preventDefault();
+        let id = document.querySelector('.add-task-button').dataset.id;
+        const taskTitle = document.getElementById('form-task-title').value;
+        const taskDesc = document.getElementById('form-task-desc').value;
+        const task = todoFactory(taskTitle, taskDesc, '2020-01-01', 'low', false);
+        // projects[id].todos.push(task);
+        projects[id].addTodo(task);
+        // displayController.displayAllProjects(projects);
+        displayController.displayTodos(projects[id], id);
+        console.log(projects[id].todos);
+        document.getElementById('new-task-form').reset();
+        document.querySelector('.task-popup').style.display = "none";
+        console.log('task submitted');
     })
 }
 
 initializeApp();
+export {projects};
