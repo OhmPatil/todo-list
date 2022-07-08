@@ -27,13 +27,11 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 
 const projectFactory = (title, desc) => {
     let todos = []
-    
+
     return {
         title,
         desc,
         todos,
-        addTodo,
-        removeTodo
     }
 }
 

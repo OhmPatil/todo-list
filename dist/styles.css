@@ -14,8 +14,8 @@
 /* Left section stuff */
 #left-section{
     height: 100%;
-    border: 5px solid red;
     padding: 2rem;
+    border-right: 2px solid black;
 }
 
 
@@ -57,7 +57,6 @@
 /* Right section stuff */
 #right-section{
     height: 100%;
-    border: 5px solid green;
     padding: .75rem;
 }
 

@@ -1,5 +1,3 @@
-import { formModule } from "./form-control";
-import { projectFactory, todoFactory } from "./factories";
 import { storageModule } from "./storage";
 
 // Main display module
@@ -97,12 +95,14 @@ const displayModule = (projects) =>{
         let todo_id = 0;
         todos.forEach(todo => {
 
+            // Creating todo div and assigning color based on priority
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
             if (todo.priority === 'high') todoDiv.classList.add('high')
             if (todo.priority === 'medium') todoDiv.classList.add('medium')
             if (todo.priority === 'low') todoDiv.classList.add('low')
 
+            // Creating checkbox div witin todo div
             const checkboxDiv = document.createElement('div');
             checkboxDiv.classList.add('checkbox-div');
             checkboxDiv.dataset.todo_id = todo_id;
@@ -111,25 +111,23 @@ const displayModule = (projects) =>{
             }
             todoDiv.appendChild(checkboxDiv);
 
+            // Todo title
             const todoTitle = document.createElement('h3');
             todoTitle.textContent = `${todo.title}`;
             todoDiv.appendChild(todoTitle);
-            // const todoDesc = document.createElement('p');
-            // todoDesc.textContent = `${todo.desc}`;
-            // todoDiv.appendChild(todoDesc);
-            // const todoPriority = document.createElement('p');
-            // todoPriority.textContent = `${todo.priority}`;
-            // todoDiv.appendChild(todoPriority);
+            
+            // Todo due date
             const todoDueDate = document.createElement('p');
             todoDueDate.textContent = `${todo.dueDate}`;
             todoDiv.appendChild(todoDueDate);
 
+            // Todo delete button
             const deleteDiv = document.createElement('div');
             deleteDiv.classList.add('delete-div');
             deleteDiv.dataset.todo_id = todo_id;
             todoDiv.appendChild(deleteDiv);
 
-
+            // Assigning unique data-id to each todo and adding to DOM
             todoDiv.dataset.todo_id = todo_id;
             document.querySelector('.tasks-container').appendChild(todoDiv);
 
@@ -139,10 +137,14 @@ const displayModule = (projects) =>{
         // Displaying add task button after all todos are displayed
         displayAddTaskButton(id);
 
+        // Event listener function for checkbox
         checkboxListener(project);
+
+        // Event listener function for delete button
         deleteListener(project);
     }
 
+    // Function to listen for checkbox button clicks
     const checkboxListener = (project) => {
         const allCheckboxes = document.querySelectorAll('.checkbox-div');
         allCheckboxes.forEach(checkbox => {
@@ -150,10 +152,11 @@ const displayModule = (projects) =>{
                 let checkboxID = checkbox.dataset.todo_id;
                 console.log('checkbox clicked');
                 project.todos[checkboxID].isComplete = !project.todos[checkboxID].isComplete;
+
+                // Updating local storage
                 storageController.updateStorage(projects);
 
                 displayTodos(project, checkboxID);
-
 
                 if (project.todos[checkboxID].isComplete === true){
                     checkbox.classList.add('completed');
@@ -165,15 +168,18 @@ const displayModule = (projects) =>{
         })
     }
 
+    // Function to listen for delete button clicks
     const deleteListener = (project) => {
         const allDeleteButtons = document.querySelectorAll('.delete-div');
         allDeleteButtons.forEach(deleteButton => {
             deleteButton.addEventListener('click', function(){
                 console.log('delete clicked');
                 let deleteID = deleteButton.dataset.todo_id;
-                // project.removeTodo(deleteID);
                 project.todos.splice(deleteID, 1);
+
+                // Updating local storage
                 storageController.updateStorage(projects);
+                
                 displayTodos(project, deleteID);
                 console.log('todo deleted');
             })

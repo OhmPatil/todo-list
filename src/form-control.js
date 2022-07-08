@@ -1,6 +1,5 @@
 import { projectFactory, todoFactory } from "./factories";
 import { displayModule } from "./renderDOM";
-import { projects } from "./logic";
 import { storageModule } from "./storage";
 
 let displayController = displayModule();
@@ -27,8 +26,8 @@ const formModule = (projects) => {
             // Adding project to projects array
             addProjectToArray(project, projects);
             console.log('project added to array');
+            // Updating local storage
             storageController.updateStorage();
-
 
             // Closing popup
             document.querySelector('.project-popup').style.display = "none";   
@@ -58,6 +57,8 @@ const formModule = (projects) => {
             const task = todoFactory(taskTitle, taskDesc, taskDate, taskPriority, false);
             projects[id].todos.push(task);
             console.log('task submitted');
+
+            // Updating local storage
             storageController.updateStorage();
 
             // Displaying all todos again including new one
