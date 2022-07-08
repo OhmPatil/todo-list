@@ -1,7 +1,62 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
-/* 0 */,
+/* 0 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "projects": () => (/* binding */ projects)
+/* harmony export */ });
+/* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+
+
+
+
+// Creating empty array to store projects
+let projects = []
+
+if (localStorage.getItem('projects')){
+    console.log('projects found in local storage');
+    projects = JSON.parse(localStorage.getItem('projects'));
+}
+
+// Initializing display and form modules
+let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)(projects);
+let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
+
+// Creating dummy projects and todos
+// let project1 = projectFactory('Project 1', 'This is project 1');
+// let project2 = projectFactory('Project 2', 'This is project 2');
+// let project3 = projectFactory('Project 3', 'This is project 3');
+// let todo1 = todoFactory('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
+// let todo2 = todoFactory('Learn React', 'Learn React', '2020-01-01', 'low', false);
+
+// // Adding dummy projects and todos to projects array/projects
+// projects.push(project1);
+// projects.push(project2);
+// projects.push(project3);
+
+// project1.addTodo(todo1);
+// project1.addTodo(todo2);
+// project2.addTodo(todo2);
+
+
+// Main app running logic starts here
+function initializeApp(){
+    displayController.displayAllProjects(projects);
+    formController.acceptProjectForm();
+    formController.acceptTaskForm();
+}
+
+initializeApp();
+
+// Exporting projects array for use in other modules
+
+
+/***/ }),
 /* 1 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -39,13 +94,7 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 
 const projectFactory = (title, desc) => {
     let todos = []
-    const addTodo = function(todo){
-        todos.push(todo);
-    }
-
-    const removeTodo = function(todo_id){
-        todos.splice(todo_id, 1);
-    }
+    
     return {
         title,
         desc,
@@ -68,6 +117,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _logic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+
+
 
 
 
@@ -75,6 +128,8 @@ let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule
 
 // Main form module
 const formModule = (projects) => {
+    
+    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_3__.storageModule)(projects);
 
     // Accept form -> create project -> add project to projects array
     const acceptProjectForm = function(){
@@ -93,6 +148,8 @@ const formModule = (projects) => {
             // Adding project to projects array
             addProjectToArray(project, projects);
             console.log('project added to array');
+            storageController.updateStorage();
+
 
             // Closing popup
             document.querySelector('.project-popup').style.display = "none";   
@@ -120,8 +177,9 @@ const formModule = (projects) => {
 
             // Creating todo and adding to respective project
             const task = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, taskDate, taskPriority, false);
-            projects[id].addTodo(task);
+            projects[id].todos.push(task);
             console.log('task submitted');
+            storageController.updateStorage();
 
             // Displaying all todos again including new one
             displayController.displayTodos(projects[id], id);
@@ -152,12 +210,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _form_control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+
 
 
 
 // Main display module
-const displayModule = () =>{
+const displayModule = (projects) =>{
 
+    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_2__.storageModule)(projects);
+    
     // Function to create and display ONE project
     const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
@@ -300,7 +362,9 @@ const displayModule = () =>{
             checkbox.addEventListener('click', function(){
                 let checkboxID = checkbox.dataset.todo_id;
                 console.log('checkbox clicked');
-                project.todos[checkboxID].changeStatus();
+                project.todos[checkboxID].isComplete = !project.todos[checkboxID].isComplete;
+                storageController.updateStorage(projects);
+
                 displayTodos(project, checkboxID);
 
 
@@ -320,7 +384,9 @@ const displayModule = () =>{
             deleteButton.addEventListener('click', function(){
                 console.log('delete clicked');
                 let deleteID = deleteButton.dataset.todo_id;
-                project.removeTodo(deleteID);
+                // project.removeTodo(deleteID);
+                project.todos.splice(deleteID, 1);
+                storageController.updateStorage(projects);
                 displayTodos(project, deleteID);
                 console.log('todo deleted');
             })
@@ -335,6 +401,26 @@ const displayModule = () =>{
     }
 }
 
+
+
+
+/***/ }),
+/* 4 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "storageModule": () => (/* binding */ storageModule)
+/* harmony export */ });
+const storageModule = (projects) => {
+    const updateStorage = function(){
+        localStorage.setItem('projects', JSON.stringify(projects));
+    }
+
+    return{
+        updateStorage,
+    }
+}
 
 
 
@@ -395,58 +481,11 @@ const displayModule = () =>{
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "projects": () => (/* binding */ projects)
-/* harmony export */ });
-/* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-
-
-
-
-// Creating empty array to store projects
-let projects = []
-
-// Initializing display and form modules
-let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)();
-let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
-
-// Creating dummy projects and todos
-let project1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 1', 'This is project 1');
-let project2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 2', 'This is project 2');
-let project3 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Project 3', 'This is project 3');
-let todo1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
-let todo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Learn React', 'Learn React', '2020-01-01', 'low', false);
-
-// Adding dummy projects and todos to projects array/projects
-projects.push(project1);
-projects.push(project2);
-projects.push(project3);
-
-project1.addTodo(todo1);
-project1.addTodo(todo2);
-project2.addTodo(todo2);
-
-
-// Main app running logic starts here
-function initializeApp(){
-    displayController.displayAllProjects(projects);
-    formController.acceptProjectForm();
-    formController.acceptTaskForm();
-
-    displayController.displayTodos(project1, 0);
-}
-
-initializeApp();
-
-// Exporting projects array for use in other modules
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__(0);
+/******/ 	
 /******/ })()
 ;

@@ -27,13 +27,7 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 
 const projectFactory = (title, desc) => {
     let todos = []
-    const addTodo = function(todo){
-        todos.push(todo);
-    }
-
-    const removeTodo = function(todo_id){
-        todos.splice(todo_id, 1);
-    }
+    
     return {
         title,
         desc,

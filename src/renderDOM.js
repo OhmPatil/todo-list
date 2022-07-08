@@ -1,9 +1,12 @@
 import { formModule } from "./form-control";
 import { projectFactory, todoFactory } from "./factories";
+import { storageModule } from "./storage";
 
 // Main display module
-const displayModule = () =>{
+const displayModule = (projects) =>{
 
+    let storageController = storageModule(projects);
+    
     // Function to create and display ONE project
     const displayProject = (project, id) => {
         const projectDiv = document.createElement('div');
@@ -146,7 +149,9 @@ const displayModule = () =>{
             checkbox.addEventListener('click', function(){
                 let checkboxID = checkbox.dataset.todo_id;
                 console.log('checkbox clicked');
-                project.todos[checkboxID].changeStatus();
+                project.todos[checkboxID].isComplete = !project.todos[checkboxID].isComplete;
+                storageController.updateStorage(projects);
+
                 displayTodos(project, checkboxID);
 
 
@@ -166,7 +171,9 @@ const displayModule = () =>{
             deleteButton.addEventListener('click', function(){
                 console.log('delete clicked');
                 let deleteID = deleteButton.dataset.todo_id;
-                project.removeTodo(deleteID);
+                // project.removeTodo(deleteID);
+                project.todos.splice(deleteID, 1);
+                storageController.updateStorage(projects);
                 displayTodos(project, deleteID);
                 console.log('todo deleted');
             })

@@ -1,10 +1,14 @@
 import { projectFactory, todoFactory } from "./factories";
 import { displayModule } from "./renderDOM";
+import { projects } from "./logic";
+import { storageModule } from "./storage";
 
 let displayController = displayModule();
 
 // Main form module
 const formModule = (projects) => {
+    
+    let storageController = storageModule(projects);
 
     // Accept form -> create project -> add project to projects array
     const acceptProjectForm = function(){
@@ -23,6 +27,8 @@ const formModule = (projects) => {
             // Adding project to projects array
             addProjectToArray(project, projects);
             console.log('project added to array');
+            storageController.updateStorage();
+
 
             // Closing popup
             document.querySelector('.project-popup').style.display = "none";   
@@ -50,8 +56,9 @@ const formModule = (projects) => {
 
             // Creating todo and adding to respective project
             const task = todoFactory(taskTitle, taskDesc, taskDate, taskPriority, false);
-            projects[id].addTodo(task);
+            projects[id].todos.push(task);
             console.log('task submitted');
+            storageController.updateStorage();
 
             // Displaying all todos again including new one
             displayController.displayTodos(projects[id], id);
