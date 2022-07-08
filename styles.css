@@ -93,6 +93,12 @@
     background-color: limegreen;
 }
 
+.delete-div{
+    border: 2px solid black;
+    width: 15px;
+    height: 15px;
+}
+
 
 
 /* Add project pop-up */
