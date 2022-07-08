@@ -1,63 +1,59 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
-/* 0 */
+/* 0 */,
+/* 1 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "projects": () => (/* binding */ projects)
+/* harmony export */   "initializeApp": () => (/* binding */ initializeApp)
 /* harmony export */ });
-/* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _factories_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _form_control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _renderDOM_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
 
 
 
-
-// Creating empty array to store projects
-let projects = []
-
-if (localStorage.getItem('projects')){
-    console.log('projects found in local storage');
-    projects = JSON.parse(localStorage.getItem('projects'));
-}
-
-// Initializing display and form modules
-let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)(projects);
-let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
-
-// Creating dummy projects and todos
-// let project1 = projectFactory('Project 1', 'This is project 1');
-// let project2 = projectFactory('Project 2', 'This is project 2');
-// let project3 = projectFactory('Project 3', 'This is project 3');
-// let todo1 = todoFactory('Learn JavaScript', 'Learn JavaScript', '2020-01-01', 'low', false);
-// let todo2 = todoFactory('Learn React', 'Learn React', '2020-01-01', 'low', false);
-
-// // Adding dummy projects and todos to projects array/projects
-// projects.push(project1);
-// projects.push(project2);
-// projects.push(project3);
-
-// project1.addTodo(todo1);
-// project1.addTodo(todo2);
-// project2.addTodo(todo2);
 
 
 // Main app running logic starts here
 function initializeApp(){
+
+    // Creating empty array to store projects
+    let projects = []
+
+    // Checking if projects exist in local storage, if yes, add them to projects array
+    if (localStorage.getItem('projects')){
+        console.log('projects found in local storage');
+        projects = JSON.parse(localStorage.getItem('projects'));
+    }
+
+    // If no projects exist in local storage, create default project and append to array
+    else {
+        let defaultProject = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.projectFactory)('Default Project', 'This is a project created by default');
+        let defaultTodo1 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Default Todo', 'This is a todo created by default', '2022-01-01', 'low', false);
+        let defaultTodo2 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Default Todo', 'This is a todo created by default', '2022-01-01', 'medium', false);
+        let defaultTodo3 = (0,_factories_js__WEBPACK_IMPORTED_MODULE_0__.todoFactory)('Default Todo', 'This is a todo created by default', '2022-01-01', 'high', false);
+        defaultProject.todos.push(defaultTodo1);
+        defaultProject.todos.push(defaultTodo2);
+        defaultProject.todos.push(defaultTodo3);
+        projects.push(defaultProject);
+    }
+
+    // Initializing display and form modules
+    let displayController = (0,_renderDOM_js__WEBPACK_IMPORTED_MODULE_2__.displayModule)(projects);
+    let formController = (0,_form_control_js__WEBPACK_IMPORTED_MODULE_1__.formModule)(projects);
+
     displayController.displayAllProjects(projects);
     formController.acceptProjectForm();
     formController.acceptTaskForm();
 }
 
-initializeApp();
-
-// Exporting projects array for use in other modules
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -94,13 +90,11 @@ const todoFactory = (title, desc, dueDate, priority, isComplete) => {
 
 const projectFactory = (title, desc) => {
     let todos = []
-    
+
     return {
         title,
         desc,
         todos,
-        addTodo,
-        removeTodo
     }
 }
 
@@ -108,18 +102,16 @@ const projectFactory = (title, desc) => {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "formModule": () => (/* binding */ formModule)
 /* harmony export */ });
-/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _logic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-
+/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _renderDOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
 
@@ -129,7 +121,7 @@ let displayController = (0,_renderDOM__WEBPACK_IMPORTED_MODULE_1__.displayModule
 // Main form module
 const formModule = (projects) => {
     
-    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_3__.storageModule)(projects);
+    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_2__.storageModule)(projects);
 
     // Accept form -> create project -> add project to projects array
     const acceptProjectForm = function(){
@@ -148,8 +140,8 @@ const formModule = (projects) => {
             // Adding project to projects array
             addProjectToArray(project, projects);
             console.log('project added to array');
+            // Updating local storage
             storageController.updateStorage();
-
 
             // Closing popup
             document.querySelector('.project-popup').style.display = "none";   
@@ -179,6 +171,8 @@ const formModule = (projects) => {
             const task = (0,_factories__WEBPACK_IMPORTED_MODULE_0__.todoFactory)(taskTitle, taskDesc, taskDate, taskPriority, false);
             projects[id].todos.push(task);
             console.log('task submitted');
+
+            // Updating local storage
             storageController.updateStorage();
 
             // Displaying all todos again including new one
@@ -201,24 +195,20 @@ const formModule = (projects) => {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "displayModule": () => (/* binding */ displayModule)
 /* harmony export */ });
-/* harmony import */ var _form_control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _factories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-
-
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 
 
 // Main display module
 const displayModule = (projects) =>{
 
-    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_2__.storageModule)(projects);
+    let storageController = (0,_storage__WEBPACK_IMPORTED_MODULE_0__.storageModule)(projects);
     
     // Function to create and display ONE project
     const displayProject = (project, id) => {
@@ -310,12 +300,14 @@ const displayModule = (projects) =>{
         let todo_id = 0;
         todos.forEach(todo => {
 
+            // Creating todo div and assigning color based on priority
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
             if (todo.priority === 'high') todoDiv.classList.add('high')
             if (todo.priority === 'medium') todoDiv.classList.add('medium')
             if (todo.priority === 'low') todoDiv.classList.add('low')
 
+            // Creating checkbox div witin todo div
             const checkboxDiv = document.createElement('div');
             checkboxDiv.classList.add('checkbox-div');
             checkboxDiv.dataset.todo_id = todo_id;
@@ -324,25 +316,23 @@ const displayModule = (projects) =>{
             }
             todoDiv.appendChild(checkboxDiv);
 
+            // Todo title
             const todoTitle = document.createElement('h3');
             todoTitle.textContent = `${todo.title}`;
             todoDiv.appendChild(todoTitle);
-            // const todoDesc = document.createElement('p');
-            // todoDesc.textContent = `${todo.desc}`;
-            // todoDiv.appendChild(todoDesc);
-            // const todoPriority = document.createElement('p');
-            // todoPriority.textContent = `${todo.priority}`;
-            // todoDiv.appendChild(todoPriority);
+            
+            // Todo due date
             const todoDueDate = document.createElement('p');
             todoDueDate.textContent = `${todo.dueDate}`;
             todoDiv.appendChild(todoDueDate);
 
+            // Todo delete button
             const deleteDiv = document.createElement('div');
             deleteDiv.classList.add('delete-div');
             deleteDiv.dataset.todo_id = todo_id;
             todoDiv.appendChild(deleteDiv);
 
-
+            // Assigning unique data-id to each todo and adding to DOM
             todoDiv.dataset.todo_id = todo_id;
             document.querySelector('.tasks-container').appendChild(todoDiv);
 
@@ -352,10 +342,14 @@ const displayModule = (projects) =>{
         // Displaying add task button after all todos are displayed
         displayAddTaskButton(id);
 
+        // Event listener function for checkbox
         checkboxListener(project);
+
+        // Event listener function for delete button
         deleteListener(project);
     }
 
+    // Function to listen for checkbox button clicks
     const checkboxListener = (project) => {
         const allCheckboxes = document.querySelectorAll('.checkbox-div');
         allCheckboxes.forEach(checkbox => {
@@ -363,10 +357,11 @@ const displayModule = (projects) =>{
                 let checkboxID = checkbox.dataset.todo_id;
                 console.log('checkbox clicked');
                 project.todos[checkboxID].isComplete = !project.todos[checkboxID].isComplete;
+
+                // Updating local storage
                 storageController.updateStorage(projects);
 
                 displayTodos(project, checkboxID);
-
 
                 if (project.todos[checkboxID].isComplete === true){
                     checkbox.classList.add('completed');
@@ -378,15 +373,18 @@ const displayModule = (projects) =>{
         })
     }
 
+    // Function to listen for delete button clicks
     const deleteListener = (project) => {
         const allDeleteButtons = document.querySelectorAll('.delete-div');
         allDeleteButtons.forEach(deleteButton => {
             deleteButton.addEventListener('click', function(){
                 console.log('delete clicked');
                 let deleteID = deleteButton.dataset.todo_id;
-                // project.removeTodo(deleteID);
                 project.todos.splice(deleteID, 1);
+
+                // Updating local storage
                 storageController.updateStorage(projects);
+                
                 displayTodos(project, deleteID);
                 console.log('todo deleted');
             })
@@ -405,7 +403,7 @@ const displayModule = (projects) =>{
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -481,11 +479,15 @@ const storageModule = (projects) => {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(0);
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _logic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
+(0,_logic__WEBPACK_IMPORTED_MODULE_0__.initializeApp)();
+})();
+
 /******/ })()
 ;
