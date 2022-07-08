@@ -250,6 +250,9 @@ const displayModule = () =>{
 
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo');
+            if (todo.priority === 'high') todoDiv.classList.add('high')
+            if (todo.priority === 'medium') todoDiv.classList.add('medium')
+            if (todo.priority === 'low') todoDiv.classList.add('low')
 
             const checkboxDiv = document.createElement('div');
             checkboxDiv.classList.add('checkbox-div');
