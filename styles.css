@@ -81,15 +81,15 @@
 }
 
 .low{
-    background-color: mediumturquoise;
+    background-color: rgb(134, 255, 251);
 }
 
 .medium{
-    background-color: yellow;
+    background-color: rgb(250, 250, 76);
 }
 
 .high{
-    background-color: red;
+    background-color: rgb(255, 118, 118);
 }
 
 .checkbox-div{
@@ -120,6 +120,7 @@
 
 .delete-div:hover{
     cursor: pointer;
+    filter: invert(1);
 }
 
 
@@ -168,6 +169,8 @@ input {
     width: 80%;
     border-radius: 10px;
     border: none;
+    background-color: lightgray;
+
 }
 
 .add-task-button{
@@ -176,6 +179,12 @@ input {
     width: 100%;
     border-radius: 10px;
     border: none;
+    background-color: lightgray;
+}
+
+.add-task-button:hover, .add-project-button:hover{
+    cursor: pointer;
+    filter: invert(1);
 }
 
 .close-task, .close-project {
