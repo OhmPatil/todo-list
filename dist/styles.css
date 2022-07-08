@@ -68,21 +68,38 @@
 }
 
 .todo{
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
+    height: 40px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
-    justify-content: flex-start;
     padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 10px;
 }
 
+.low{
+    background-color: mediumturquoise;
+}
+
+.medium{
+    background-color: yellow;
+}
+
+.high{
+    background-color: red;
+}
 
 .checkbox-div{
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     border: 1px solid black;
     border-radius: 50%;
-
+    background-image: url(./content/check.svg);
+    background-size: 90%;
+    background-position: center;
 }
 
 .checkbox-div:hover{
@@ -94,9 +111,15 @@
 }
 
 .delete-div{
-    border: 2px solid black;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
+    background-image: url(./content/trash-can-outline.svg);
+    background-size: cover;
+    background-position: center;
+}
+
+.delete-div:hover{
+    cursor: pointer;
 }
 
 
@@ -133,7 +156,6 @@
 }
 
 input {
-	/* margin: 15px auto; */
 	width: 80%;
 	padding: 8px;
 	border: 1px solid gray;
