@@ -30,11 +30,16 @@ const projectFactory = (title, desc) => {
     const addTodo = function(todo){
         todos.push(todo);
     }
+
+    const removeTodo = function(todo_id){
+        todos.splice(todo_id, 1);
+    }
     return {
         title,
         desc,
         todos,
-        addTodo
+        addTodo,
+        removeTodo
     }
 }
 

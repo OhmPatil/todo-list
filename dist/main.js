@@ -42,11 +42,16 @@ const projectFactory = (title, desc) => {
     const addTodo = function(todo){
         todos.push(todo);
     }
+
+    const removeTodo = function(todo_id){
+        todos.splice(todo_id, 1);
+    }
     return {
         title,
         desc,
         todos,
-        addTodo
+        addTodo,
+        removeTodo
     }
 }
 
@@ -248,11 +253,7 @@ const displayModule = () =>{
 
             const checkboxDiv = document.createElement('div');
             checkboxDiv.classList.add('checkbox-div');
-            // const todoCheckbox = document.createElement('input');
-            // todoCheckbox.type = 'checkbox';
-            // todoCheckbox.classList.add('todo-checkbox');
             checkboxDiv.dataset.todo_id = todo_id;
-            // checkboxDiv.appendChild(todoCheckbox);
             if (todo.isComplete === true) {
                 checkboxDiv.classList.add('completed');
             }
@@ -261,20 +262,23 @@ const displayModule = () =>{
             const todoTitle = document.createElement('h3');
             todoTitle.textContent = `${todo.title}`;
             todoDiv.appendChild(todoTitle);
-            const todoDesc = document.createElement('p');
-            todoDesc.textContent = `${todo.desc}`;
-            todoDiv.appendChild(todoDesc);
-            const todoPriority = document.createElement('p');
-            todoPriority.textContent = `${todo.priority}`;
-            todoDiv.appendChild(todoPriority);
+            // const todoDesc = document.createElement('p');
+            // todoDesc.textContent = `${todo.desc}`;
+            // todoDiv.appendChild(todoDesc);
+            // const todoPriority = document.createElement('p');
+            // todoPriority.textContent = `${todo.priority}`;
+            // todoDiv.appendChild(todoPriority);
             const todoDueDate = document.createElement('p');
             todoDueDate.textContent = `${todo.dueDate}`;
             todoDiv.appendChild(todoDueDate);
-            const todoComplete = document.createElement('p');
-            todoComplete.textContent = `${todo.isComplete}`;
+
+            const deleteDiv = document.createElement('div');
+            deleteDiv.classList.add('delete-div');
+            deleteDiv.dataset.todo_id = todo_id;
+            todoDiv.appendChild(deleteDiv);
+
 
             todoDiv.dataset.todo_id = todo_id;
-            todoDiv.appendChild(todoComplete);
             document.querySelector('.tasks-container').appendChild(todoDiv);
 
             todo_id++;
@@ -284,6 +288,7 @@ const displayModule = () =>{
         displayAddTaskButton(id);
 
         checkboxListener(project);
+        deleteListener(project);
     }
 
     const checkboxListener = (project) => {
@@ -305,6 +310,20 @@ const displayModule = () =>{
             })
         })
     }
+
+    const deleteListener = (project) => {
+        const allDeleteButtons = document.querySelectorAll('.delete-div');
+        allDeleteButtons.forEach(deleteButton => {
+            deleteButton.addEventListener('click', function(){
+                console.log('delete clicked');
+                let deleteID = deleteButton.dataset.todo_id;
+                project.removeTodo(deleteID);
+                displayTodos(project, deleteID);
+                console.log('todo deleted');
+            })
+    })
+}
+    
     return {
         displayProject,
         displayAddProjectButton,
