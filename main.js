@@ -219,7 +219,13 @@ const displayModule = (projects) =>{
         projectTitle.textContent = `${project.title}`;
         projectDiv.appendChild(projectTitle);
 
-        // Assigning unique data-id to each project
+        const deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('delete-project');
+        // deleteDiv.textContent = 'X';
+        projectDiv.appendChild(deleteDiv);
+
+        // Assigning unique data-id to each project and delete button
+        deleteDiv.dataset.id = id;
         projectDiv.dataset.id = id;
         
         // Logic for displaying todos
@@ -284,6 +290,9 @@ const displayModule = (projects) =>{
 
         // Displaying add project button after all projects are displayed
         displayAddProjectButton();
+
+        // Listening for click on delete button to delete project
+        deleteProjectListener(projects);
     }
 
     // Function to display all todos of one project
@@ -346,7 +355,7 @@ const displayModule = (projects) =>{
         checkboxListener(project);
 
         // Event listener function for delete button
-        deleteListener(project);
+        deleteTodoListener(project);
     }
 
     // Function to listen for checkbox button clicks
@@ -374,7 +383,7 @@ const displayModule = (projects) =>{
     }
 
     // Function to listen for delete button clicks
-    const deleteListener = (project) => {
+    const deleteTodoListener = (project) => {
         const allDeleteButtons = document.querySelectorAll('.delete-div');
         allDeleteButtons.forEach(deleteButton => {
             deleteButton.addEventListener('click', function(){
@@ -390,6 +399,23 @@ const displayModule = (projects) =>{
             })
     })
 }
+    // Function to listen for delete project button clicks
+    const deleteProjectListener = (projects) => {
+        const allDeleteButtons = document.querySelectorAll('.delete-project');
+        allDeleteButtons.forEach(deleteButton => {
+            deleteButton.addEventListener('click', function(){
+                console.log('delete clicked');
+                let deleteID = deleteButton.dataset.id;
+                projects.splice(deleteID, 1);
+
+                // Updating local storage
+                storageController.updateStorage(projects);
+
+                displayAllProjects(projects);
+                console.log('project deleted');
+            })
+        })
+    }
     
     return {
         displayProject,
